@@ -15,7 +15,7 @@ docker compose up --build
 ### 4. Установите зависимости Composer внутри контейнера:
 ### 5. (Опционально) Запустите тесты внутри контейнера:
 ```
-docker-compose exec app composer test
+docker compose exec app composer test
 ```
 ### Дальнейшие улучшения проекта
 #### Работа с HTTP:
