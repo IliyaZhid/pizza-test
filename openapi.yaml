@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: API сервиса для управления пиццерией
+  version: 0.0.1
+tags:
+  - name: orders
+    description: Доступ к заказам
+paths:
+  /orders:
+    get:
+      tags:
+        - orders
+      summary: Возвращает список заказов
+      operationId: getOrders
+      parameters:
+        - name: done
+          in: query
+          description: Признак, указывающий на то, что нужно получить только выполненные заказы
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Некорректный запрос
+        '500':
+          description: Внутренняя ошибка сервера
+    post:
+      tags:
+        - orders
+      summary: Создает новый заказ
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderItemsRequest'
+      responses:
+        '201':
+          description: Заказ успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Некорректный запрос
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /orders/{orderId}:
+    get:
+      tags:
+        - orders
+      summary: Возвращает заказ по его ID
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: ID заказа
+          required: true
+          schema:
+            type: string
+            example: "order_123"
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Заказ не найден
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /orders/{orderId}/items:
+    post:
+      tags:
+        - orders
+      summary: Добавляет товары в заказ
+      operationId: addItems
+      parameters:
+        - name: orderId
+          in: path
+          description: ID заказа
+          required: true
+          schema:
+            type: string
+            example: "order_123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderItemsRequest'
+      responses:
+        '200':
+          description: Товары успешно добавлены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Некорректный запрос
+        '404':
+          description: Заказ не найден
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /orders/{orderId}/done:
+    post:
+      tags:
+        - orders
+      summary: Помечает заказ как выполненный
+      operationId: markOrderAsDone
+      parameters:
+        - name: orderId
+          in: path
+          description: ID заказа
+          required: true
+          schema:
+            type: string
+            example: "order_123"
+      responses:
+        '200':
+          description: Заказ успешно помечен как выполненный
+        '400':
+          description: Некорректный запрос (например, заказ уже выполнен)
+        '401':
+          description: Неверный ключ авторизации
+        '404':
+          description: Заказ не найден
+        '500':
+          description: Внутренняя ошибка сервера
+
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        order_id:
+          type: string
+          example: "order_123"
+        done:
+          type: boolean
+          example: false
+        items:
+          type: array
+          items:
+            type: integer
+            example: 1
+      xml:
+        name: Order
+
+    OrderItemsRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: integer
+            example: 1
+          description: Список ID товаров
+      required:
+        - items
+      xml:
+        name: OrderItemsRequest
+
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        order_id:
+          type: string
+          example: "order_123"
+        item_id:
+          type: integer
+          example: 1
+      xml:
+        name: OrderItem

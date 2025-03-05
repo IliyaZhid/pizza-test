@@ -1,0 +1,11 @@
+CREATE TABLE orders (
+order_id VARCHAR(15) PRIMARY KEY,
+done BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE order_items (
+id SERIAL PRIMARY KEY,
+order_id VARCHAR(15) NOT NULL,
+item_id INTEGER NOT NULL CHECK (item_id >= 1 AND item_id <= 5000),
+FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE
+);

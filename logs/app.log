@@ -1,0 +1,4 @@
+[2025-03-05T14:09:17.937118+00:00] app.ERROR: Order creation failed: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "orders" does not exist LINE 1: INSERT INTO orders (order_id) VALUES ($1)                     ^ [] []
+[2025-03-05T14:14:32.172297+00:00] app.ERROR: Order creation failed: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "orders" does not exist LINE 1: INSERT INTO orders (order_id) VALUES ($1)                     ^ [] []
+[2025-03-05T14:17:25.859866+00:00] app.ERROR: Order creation failed: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "orders" does not exist LINE 1: INSERT INTO orders (order_id) VALUES ($1)                     ^ [] []
+[2025-03-05T14:17:28.878472+00:00] app.ERROR: Order creation failed: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "orders" does not exist LINE 1: INSERT INTO orders (order_id) VALUES ($1)                     ^ [] []
